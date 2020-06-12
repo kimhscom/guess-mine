@@ -2,6 +2,8 @@ import gulp from "gulp";
 import sass from "gulp-sass";
 import autoprefixer from "gulp-autoprefixer";
 import minifyCSS from "gulp-csso";
+import del from "del";
+import bro from "gulp-browserify";
 
 sass.compiler = require("node-sass");
 
@@ -11,10 +13,17 @@ const paths = {
     dest: "src/static/style",
     watch: "assets/scss/**/*.scss",
   },
+  js: {
+    src: "assets/js/main.js",
+    dest: "src/static/js",
+    watch: "assets/js/**/*.js",
+  },
 };
 
-const style = () => {
-  return gulp
+const clean = () => del(["src/static"]);
+
+const style = () =>
+  gulp
     .src(paths.style.src)
     .pipe(sass())
     .pipe(
@@ -25,12 +34,15 @@ const style = () => {
     )
     .pipe(minifyCSS())
     .pipe(gulp.dest(paths.style.dest));
-};
+
+const js = () =>
+  gulp.src(paths.js.src).pipe(bro()).pipe(gulp.dest(paths.js.dest));
 
 const watchFiles = () => {
   gulp.watch(paths.style.watch, style);
+  gulp.watch(paths.js.watch, js);
 };
 
-const dev = gulp.series([style, watchFiles]);
+const dev = gulp.series([clean, style, js, watchFiles]);
 
 export default dev;
