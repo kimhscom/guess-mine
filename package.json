@@ -42,7 +42,7 @@
     "lodash": "^4.17.19",
     "lodash.template": "^4.5.0",
     "prettier": "^2.0.5",
-    "shell-quote": "^1.7.2",
+    "shell-quote": "^1.7.3",
     "uglify-js": "^3.9.4"
   }
 }
